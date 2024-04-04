@@ -27,4 +27,3 @@ server {
 "
 echo "$SERVER_CONFIG" > /etc/nginx/sites-enabled/default
 sudo service nginx restart
-exit 0
