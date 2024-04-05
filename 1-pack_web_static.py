@@ -7,6 +7,7 @@ import subprocess
 
 
 def do_pack():
+
     os.makedirs("versions", exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     output = f"versions/web_static_{timestamp}.tgz"
@@ -25,5 +26,3 @@ def do_pack():
         print(f"Error accessing file: {e}")
         output = None
     return output
-if __name__ == "__main__":
-    do_pack()
