@@ -1,29 +1,28 @@
 #!/usr/bin/python3
-"""Send """
+"""Generating a .tgz file"""
 from datetime import datetime
+from fabric.api import local
 import os
-from fabric.api import local, runs_once
+import subprocess
 
 
-@runs_once
 def do_pack():
-    if not os.path.isdir("versions"):
-        os.mkdir("versions")
-    d_time = datetime.now()
-    output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
-            d_time.year,
-            d_time.month,
-            d_time.day,
-            d_time.hour,
-            d_time.minute,
-            d_time.second
-    )
+
+    os.makedirs("versions", exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    output = f"versions/web_static_{timestamp}.tgz"
+    web_static_path = "/AirBnB_clone_v2/web_static/"
     try:
         print("Packing web_static to {}".format(output))
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -cvzf {} {}".format(output, web_static_path))
         size = os.stat(output).st_size
         print("web_static packed: {} -> {} Bytes".format(output, size))
-    except Exception:
-        output = None
 
+        os.chmod(output, 0o664)
+    except subprocess.CalledProcessError as e:
+        print(f"Error packing web_static: {e}")
+        output = None
+    except OSError as e:
+        print(f"Error accessing file: {e}")
+        output = None
     return output
