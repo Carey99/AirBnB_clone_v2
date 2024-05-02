@@ -22,6 +22,7 @@ def c_is_cool(text):
     return f'C {text}'
 
 
+@app.route("/python", strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_is_cool(text="is cool"):
     text = text.replace("_", " ")
